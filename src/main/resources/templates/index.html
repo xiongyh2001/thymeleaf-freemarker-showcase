@@ -1,0 +1,15 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Spring Boot Store</title>
+</head>
+<body>
+	<div th:include="thymeleaf/header :: content"></div>
+  <h1>Spring Boot Store</h1>
+
+
+  <!-- Need URL for link -->
+  <a th:href="@{/productbrowse}">Search Product</a>
+
+  <div th:include="thymeleaf/footer :: content"></div>
+</body>
+</html>

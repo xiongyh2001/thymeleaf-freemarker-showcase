@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Search Product</title>
+</head>
+<body>
+
+<div th:include="header :: content"></div>
+	
+  <h1>Spring Boot Store</h1>
+  
+	<h1>Search Product</h1>
+	
+    <form action="#" th:action="@{/searchproduct}" th:object="${searchCriteria}" method="post">
+    	<p>Category: 
+    	          <select th:field="*{category}">
+                         <option value="ALL">ALL</option>
+                         <option th:each="cc : ${categoryList}"
+                            th:value="${cc}"
+                            th:utext="${cc}"/>
+                  </select>
+    	</p>
+        <p>Max Price: <input type="text" th:field="*{price}" />
+        <p th:if="${#fields.hasErrors('price')}" th:errors="*{price}">Price Error</p>
+        </p>       
+        <p><input type="submit" value="Submit" /> <input type="reset" value="Reset" /></p>
+    </form>
+	
+	<br/>
+	<table border="1">
+		<tr>
+			<td>&nbsp;</td>
+			<td>Product Id</td>
+			<td>Product Name</td>
+			<td>Product Description</td>
+			<td>Product Category</td>
+			<td>Product Price</td>
+		</tr>
+		<tr th:each="product : ${productList}">
+			<!-- Add Edit link -->
+			<td><img th:src="${product.imageUri}"/></td>
+			<!-- Other purchase details -->
+			<td th:text="${product.productId}"></td>
+			<td th:text="${product.name}"></td>
+			<td th:text="${product.description}"></td>
+			<td th:text="${product.category}"></td>
+			<td th:text="${product.price}"></td>
+		</tr>
+	</table>
+	<br />
+
+	<!-- Need URL for index page -->
+	<a th:href="@{/index.html}">Back to Main Menu</a>
+	
+	<div th:include="footer :: content"></div>
+
+</body>
+</html>
