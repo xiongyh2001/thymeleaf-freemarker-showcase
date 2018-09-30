@@ -38,6 +38,7 @@ public class LogAdminEndpoint extends LoggersEndpoint{
 
 	private String[] prefixFilters;	
 	private final static String SPRINGBOOT_LOGGER_KEY = "loggers";
+	private final static String JSON_DATA_KEY = "data";
 	
 	private List<Object> result = new LinkedList<>();
 	private Map<String, Object> myloggers = new LinkedHashMap<>();
@@ -49,12 +50,14 @@ public class LogAdminEndpoint extends LoggersEndpoint{
 	}
 
 	@ReadOperation
-	public Map<String, Object> loggers(){   
+	public Map<String, Object> loggers(){  
+		
+		result.clear();
 		
         ((Map<String, Object>) super.loggers().get(SPRINGBOOT_LOGGER_KEY)).entrySet().stream()
         				.filter(x -> contains(x.getKey())).forEach( x -> addLogger(x));
         
-        myloggers.put(SPRINGBOOT_LOGGER_KEY, result);
+        myloggers.put(JSON_DATA_KEY, result);
         
         return myloggers;
 	}
@@ -74,7 +77,7 @@ public class LogAdminEndpoint extends LoggersEndpoint{
 	
 	private void addLogger (Entry<String, Object> logger) {
 		
-		result.add(new ClassLoggers(logger.getKey(), ((LoggerLevels)logger.getValue()).getEffectiveLevel()));
+		result.add(new ClassLoggers(logger.getKey(), ((LoggerLevels)logger.getValue()).getEffectiveLevel(), logger.getKey()));
 	}
 	
 	public String[] getPrefixFilters() {
@@ -90,6 +93,16 @@ public class LogAdminEndpoint extends LoggersEndpoint{
 		private String className;
 
 		private String effectiveLevel;
+
+		private String toChangeclassName;
+
+
+		public ClassLoggers(String className, String effectiveLevel, String toChangeclassName) {
+			super();
+			this.className = className;
+			this.effectiveLevel = effectiveLevel;
+			this.toChangeclassName = toChangeclassName;
+		}
 
 		public String getClassName() {
 			return className;
@@ -107,13 +120,13 @@ public class LogAdminEndpoint extends LoggersEndpoint{
 			this.effectiveLevel = effectiveLevel;
 		}
 
-		public ClassLoggers(String className, String effectiveLevel) {
-			super();
-			this.className = className;
-			this.effectiveLevel = effectiveLevel;
+		public String getToChangeclassName() {
+			return toChangeclassName;
 		}
 
-
+		public void setToChangeclassName(String toChangeclassName) {
+			this.toChangeclassName = toChangeclassName;
+		}
 
 	}
 }
